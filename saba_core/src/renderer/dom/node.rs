@@ -78,11 +78,30 @@ impl Node {
     }
 }
 
-#[derive(Debug, Clone)]
+impl PartialEq for Node {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind == other.kind
+    }
+}
+
+#[derive(Debug, Clone, Eq)]
 pub enum NodeKind {
     Document,
     Element(Element),
     Text(String),
+}
+
+impl PartialEq for NodeKind {
+    fn eq(&self, other: &Self) -> bool {
+        match &self {
+            NodeKind::Document => matches!(other, NodeKind::Document),
+            NodeKind::Element(e1) => match &other {
+                NodeKind::Element(e2) => e1.kind == e2.kind,
+                _ => false,
+            },
+            NodeKind::Text(_) => matches!(other, NodeKind::Text(_)),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -109,7 +128,7 @@ impl Window {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Element {
     kind: ElementKind,
     attributes: Vec<Attribute>,
