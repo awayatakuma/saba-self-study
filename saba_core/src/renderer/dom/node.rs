@@ -1,4 +1,8 @@
-use core::{cell::RefCell, str::FromStr};
+use core::{
+    cell::RefCell,
+    fmt::{Display, Formatter},
+    str::FromStr,
+};
 
 use alloc::{
     format,
@@ -104,6 +108,23 @@ impl PartialEq for NodeKind {
     }
 }
 
+impl Display for ElementKind {
+    fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
+        let s = match self {
+            ElementKind::Html => "html",
+            ElementKind::Head => "head",
+            ElementKind::Style => "style",
+            ElementKind::Script => "script",
+            ElementKind::Body => "body",
+            ElementKind::H1 => "h1",
+            ElementKind::H2 => "h2",
+            ElementKind::P => "p",
+            ElementKind::A => "a",
+        };
+        write!(f, "{}", s)
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Window {
     document: Rc<RefCell<Node>>,
@@ -145,6 +166,17 @@ impl Element {
 
     pub fn kind(&self) -> ElementKind {
         self.kind
+    }
+
+    pub fn attributes(&self) -> Vec<Attribute> {
+        self.attributes.clone()
+    }
+
+    pub fn is_block_element(&self) -> bool {
+        match self.kind {
+            ElementKind::Body | ElementKind::H1 | ElementKind::H2 | ElementKind::P => true,
+            _ => false,
+        }
     }
 }
 
