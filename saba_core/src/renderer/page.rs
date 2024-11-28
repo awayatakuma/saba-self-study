@@ -14,7 +14,7 @@ use super::css::cssom::{CssParser, StyleSheet};
 use super::css::token::CssTokenizer;
 use super::dom::api::get_style_content;
 use super::dom::node::{ElementKind, NodeKind};
-use super::layout::layout_view::{self, LayoutView};
+use super::layout::layout_view::LayoutView;
 
 #[derive(Debug, Clone)]
 pub struct Page {
