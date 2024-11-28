@@ -13,6 +13,7 @@ use core::cell::RefCell;
 use super::css::cssom::{CssParser, StyleSheet};
 use super::css::token::CssTokenizer;
 use super::dom::api::get_style_content;
+use super::dom::node::{ElementKind, NodeKind};
 use super::layout::layout_view::{self, LayoutView};
 
 #[derive(Debug, Clone)]
@@ -86,5 +87,23 @@ impl Page {
 
     pub fn clear_display_items(&mut self) {
         self.display_items = Vec::new()
+    }
+
+    pub fn clicked(&self, position: (i64, i64)) -> Option<String> {
+        let view = match &self.layout_view {
+            Some(v) => v,
+            None => return None,
+        };
+
+        if let Some(n) = view.find_node_by_position(position) {
+            if let Some(parent) = n.borrow().parent().upgrade() {
+                if let NodeKind::Element(e) = parent.borrow().node_kind() {
+                    if e.kind() == ElementKind::A {
+                        return e.get_attribute("href");
+                    }
+                }
+            }
+        }
+        None
     }
 }

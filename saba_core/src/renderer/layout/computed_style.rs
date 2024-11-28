@@ -231,7 +231,7 @@ impl Color {
     pub fn black() -> Self {
         Self {
             name: Some("black".to_string()),
-            code: "#ffffff".to_string(),
+            code: "#000000".to_string(),
         }
     }
 
