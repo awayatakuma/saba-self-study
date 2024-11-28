@@ -60,6 +60,7 @@ impl JsRuntime {
             } => todo!(),
             Node::MemberExpression { object, property } => todo!(),
             Node::NumericLiteral(value) => Some(RuntimeValue::Number(*value)),
+            _ => todo!(),
         }
     }
 }
