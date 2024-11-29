@@ -88,7 +88,6 @@ impl JsRuntime {
                 }
                 None
             }
-            Node::NumericLiteral(value) => Some(RuntimeValue::Number(*value)),
             Node::VariableDeclaration { declarations } => {
                 for declaration in declarations {
                     self.eval(&declaration, env.clone());
@@ -111,6 +110,7 @@ impl JsRuntime {
             Node::StringLiteral(value) => Some(RuntimeValue::StringLiteral(value.to_string())),
             Node::MemberExpression { object, property } => todo!(),
             Node::NumericLiteral(value) => Some(RuntimeValue::Number(*value)),
+            _ => todo!(),
         }
     }
 }
